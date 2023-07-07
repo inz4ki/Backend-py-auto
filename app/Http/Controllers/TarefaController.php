@@ -55,11 +55,11 @@ class TarefaController extends Controller
     }
 
     public function reiniciarCampoEstado()
-    { 
+    {
         $tarefa = Tarefa::where('estado', '!=', 'não executado')
-        ->where('estado', '!=', 'Desativado')
-        ->update(['estado' => 'não executado']); 
-       
+            ->where('estado', '!=', 'Desativado')
+            ->update(['estado' => 'não executado']);
+
         return $tarefa;
     }
 
@@ -89,16 +89,61 @@ class TarefaController extends Controller
         Carbon::setLocale('pt');
         $horaAtual = Carbon::now();
         $nomeDia = Carbon::now()->translatedFormat('D');
+        $Dia = Carbon::now()->translatedFormat('d');
+        $DiaTeste = Carbon::now()->translatedFormat('d/m/Y');
+        $ultimoDia = Carbon::now()->endOfMonth()->translatedFormat('d');
+
+        #teste
+        $trimestal = Carbon::createFromFormat('d/m/Y', $DiaTeste)->isoFormat('DD/MM/YYYY');
+
+        $consultarMensal = Tarefa::where('dia_da_semana', 'LIKE', "%Mensal,{$Dia}%")
+            ->where('hora_executar', '<', $horaAtual)
+            ->where('estado', '=', 'não executado')
+            ->get();
+
+        $consultarUltimoDia = Tarefa::where('dia_da_semana', 'LIKE', "%Ultimo%")
+            ->where('hora_executar', '<', $horaAtual)
+            ->where('estado', '=', 'não executado')
+            ->orderBy('hora_executar')
+            ->first();
+
+        $consultarMensalDia = Tarefa::where('hora_executar', '<', $horaAtual)
+            ->where('dia_da_semana', 'LIKE', "%{$Dia}%")
+            ->where('estado', '=', 'não executado')
+            ->orderBy('hora_executar')
+            ->first();
+
+        $ConsultarSemanal = Tarefa::where('hora_executar', '<', $horaAtual)
+            ->where('estado', '=', 'não executado')
+            ->where('dia_da_semana', 'LIKE', "%{$nomeDia}%")
+            ->orderBy('hora_executar')
+            ->first();
+
+        $ConsultarTrimestral = Tarefa::where('hora_executar', '<', $horaAtual)
+            ->where('estado', '=', 'não executado')
+            ->where('dia_da_semana', 'LIKE', "%{$trimestal}%")
+            ->orderBy('hora_executar')
+            ->first();
+
         $executando = Tarefa::where('estado', '=', 'executando')->get();
+
         if (!$executando->isEmpty()) {
             echo $executando;
         } else {
-            $ConsultarTarefa = Tarefa::where('hora_executar', '<', $horaAtual)
-                ->where('estado', '=', 'não executado')
-                ->where('dia_da_semana', 'LIKE', "%{$nomeDia}%")
-                ->orderBy('hora_executar')
-                ->first();
-            echo $ConsultarTarefa;
+            if (!$consultarMensal->isEmpty()) {
+                echo $consultarMensalDia;
+            } else if ($Dia === $ultimoDia && $consultarUltimoDia == true) {
+                echo $consultarUltimoDia;
+            } else if ($ConsultarTrimestral == true) {
+                echo $ConsultarTrimestral;
+                $update = Carbon::now()->addMonths(3)->translatedFormat('d/m/Y');
+                $updateTrimestral = $ConsultarTrimestral;
+                $updateTrimestral ->update([
+                    'dia_da_semana' => $update
+                ]);
+            } else {
+                echo $ConsultarSemanal;
+            }
         }
     }
 

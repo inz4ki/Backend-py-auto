@@ -18,6 +18,7 @@ class EtapaController extends Controller
         $etapa->acao = $request->acao;
         $etapa->tempo_execucao = $request->tempo_execucao;
         $etapa->digitar = $request->digitar;
+        $etapa->renomear_data = $request->renomear_data;
         $etapa->atalho = $request->atalho;
         $etapa->caminho = $request->file('imagem')->store('/', 'public');
 
@@ -61,6 +62,7 @@ class EtapaController extends Controller
         $etapa->acao = $request->acao;
         $etapa->tempo_execucao = $request->tempo_execucao;
         $etapa->digitar = $request->digitar;
+        $etapa->renomear_data = $request->renomear_data;
         $etapa->caminho = $request->file('imagem')->store('/', 'public');
         $etapa->atalho = $request->atalho;
         $etapa->save();
