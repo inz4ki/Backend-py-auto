@@ -5,6 +5,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ObstaculoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,10 @@ Route::post('usuarios/login', [LoginController::class, 'login'])->name('login');
 // Route::get('tarefas/horarios', [TarefaHorarioController::class, 'showAll'])->name('tarefaHorario.showAll');
 // Route::post('tarefas/horarios/salvar', [TarefaHorarioController::class, 'store'])->name('tarefaHorario.store');
 
+#obstaculo
+Route::post('tarefa/obstaculo/salvar', [ObstaculoController::class, 'store'])->name('obstaculo.store');
+Route::get('tarefa/obstaculo/{tarefa}', [ObstaculoController::class, 'showAll'])->name('obstaculo.showAll');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     #tarefas com segurança rotas
     Route::post('tarefa/salvar', [TarefaController::class, 'store'])->name('tarefa.store');
@@ -63,4 +68,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('tarefa/desativar/{tarefa}', [TarefaController::class, 'desativarCampoEstadoComID'])->name('tarefa.desativarCampoEstadoComID');
     #etapas rotas
     Route::get('etapa/{etapa}', [EtapaController::class, 'showTask'])->name('etapa.showTask');
+    
 });

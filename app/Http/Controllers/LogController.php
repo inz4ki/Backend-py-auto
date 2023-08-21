@@ -16,7 +16,7 @@ class LogController extends Controller
     public function index()
     {
         //
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.
@@ -27,7 +27,7 @@ class LogController extends Controller
     public function store(Request $request)
     {
         $tarefa_log = new Tarefa_log();
-        $tarefa_log->fk_id_tarefa = $request->fk_id_tarefa;
+        $tarefa_log->fk_id_tarefa_log = $request->fk_id_tarefa_log;
         $tarefa_log->fk_id_etapa = $request->fk_id_etapa;
         $tarefa_log->nome_etapa = $request->nome_etapa;
         $tarefa_log->caminho = $request->file('erro')->store('/erro','public');
@@ -50,7 +50,7 @@ class LogController extends Controller
         ->orderBy('bot_tarefa_logs.data_hora','DESC')
         ->get();
 
-        // $consultaEtapa = Etapa::where('bot_etapas.fk_id_tarefa', '=', $tarefaID)
+        // $consultaEtapa = Etapa::where('bot_etapas.fk_id_tarefa_log', '=', $tarefaID)
         //     ->select('bot_etapas.*')
         //     ->orderBy('bot_etapas.ordem')
         //     ->get();

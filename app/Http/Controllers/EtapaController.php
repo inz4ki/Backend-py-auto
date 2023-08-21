@@ -12,7 +12,7 @@ class EtapaController extends Controller
     public function store(Request $request)
     {
         $etapa = new Etapa();
-        $etapa->fk_id_tarefa = $request->fk_id_tarefa;
+        $etapa->fk_id_tarefa_etapa = $request->fk_id_tarefa_etapa;
         $etapa->ordem = $request->ordem;
         $etapa->nome_etapa = $request->nome_etapa;
         $etapa->acao = $request->acao;
@@ -31,7 +31,7 @@ class EtapaController extends Controller
     {
         $tarefaID = $tarefa->pk_id_tarefa;
 
-        $consultaEtapa = Etapa::where('bot_etapas.fk_id_tarefa', '=', $tarefaID)
+        $consultaEtapa = Etapa::where('bot_etapas.fk_id_tarefa_etapa', '=', $tarefaID)
             ->select('bot_etapas.*')
             ->orderBy('bot_etapas.ordem')
             ->get();

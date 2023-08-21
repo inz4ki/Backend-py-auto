@@ -45,20 +45,35 @@ class TarefaController extends Controller
 
     public function atualizarTarefa(Request $request, Tarefa $tarefa)
     {
-        $tarefa->dia_da_semana = $request->dia_da_semana;
-        $tarefa->hora_executar = $request->hora_executar;
-        $tarefa->nome_tarefa = $request->nome_tarefa;
-        $tarefa->estado = $request->estado;
-        $tarefa->save();
+        if ($tarefa->dia_da_semana = "Tarefa Filha") {
+            $tarefa->dia_da_semana = $request->dia_da_semana;
+            $tarefa->hora_executar = $request->hora_executar;
+            $tarefa->nome_tarefa = $request->nome_tarefa;
+            $tarefa->estado = 'Desativado';
+            $tarefa->save();
 
-        return $request;
+            return $request;
+        } else {
+            $tarefa->dia_da_semana = $request->dia_da_semana;
+            $tarefa->hora_executar = $request->hora_executar;
+            $tarefa->nome_tarefa = $request->nome_tarefa;
+            $tarefa->estado = $request->estado;
+            $tarefa->save();
+
+            return $request;
+        }
     }
 
     public function reiniciarCampoEstado()
     {
         $tarefa = Tarefa::where('estado', '!=', 'não executado')
             ->where('estado', '!=', 'Desativado')
+            ->where('dia_da_semana', '!=', 'Tarefa Filha')
             ->update(['estado' => 'não executado']);
+
+        $tarefaFilha = Tarefa::where('estado', '!=', 'não executado')
+        ->where('dia_da_semana', '=', 'Tarefa Filha')
+        ->update(['estado' => 'Desativado']);
 
         return $tarefa;
     }
@@ -125,6 +140,12 @@ class TarefaController extends Controller
             ->orderBy('hora_executar')
             ->first();
 
+        // nao funcional
+        $ConsultarTarefaFilha = Tarefa::where('estado', '=', 'não executado')
+            ->where('dia_da_semana', 'LIKE', "Tarefa Filha")
+            ->orderBy('hora_executar')
+            ->first();
+
         $executando = Tarefa::where('estado', '=', 'executando')->get();
 
         if (!$executando->isEmpty()) {
@@ -138,9 +159,14 @@ class TarefaController extends Controller
                 echo $ConsultarTrimestral;
                 $update = Carbon::now()->addMonths(3)->translatedFormat('d/m/Y');
                 $updateTrimestral = $ConsultarTrimestral;
-                $updateTrimestral ->update([
+                $updateTrimestral->update([
                     'dia_da_semana' => $update
                 ]);
+            } else if ($ConsultarTarefaFilha == true) {
+                $ConsultarTarefaFilha->update([
+                    'estado' => 'não executado'
+                ]);
+                echo $ConsultarTarefaFilha;
             } else {
                 echo $ConsultarSemanal;
             }
