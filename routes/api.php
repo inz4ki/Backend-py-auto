@@ -38,7 +38,8 @@ Route::get('tarefas', [TarefaController::class, 'showAll'])->name('tarefas.showA
 Route::get('tarefa/{tarefa}', [TarefaController::class, 'show'])->name('tarefa.show'); 
 #log rotas
 Route::post('log/salvar', [LogController::class, 'store'])->name('log.store');
-Route::get('log', [LogController::class, 'showAll'])->name('log.showAll'); 
+Route::get('log', [LogController::class, 'showAll'])->name('log.showAll');
+Route::get('log/tarefa/{tarefa}', [LogController::class, 'show'])->name('log.show'); 
 
 #Usuarios rotas
 Route::get('usuarios', [UserController::class, 'listarTodosUsuarios'])->name('usuarios.listarTodosUsuarios');

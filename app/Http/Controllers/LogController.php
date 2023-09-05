@@ -8,22 +8,6 @@ use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    } 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $tarefa_log = new Tarefa_log();
@@ -37,46 +21,21 @@ class LogController extends Controller
 
         return $tarefa_log;
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function showAll()
     {
         $tarefaLog = Tarefa_log::select('bot_tarefa_logs.*')
         ->orderBy('bot_tarefa_logs.data_hora','DESC')
         ->get();
-
-        // $consultaEtapa = Etapa::where('bot_etapas.fk_id_tarefa_log', '=', $tarefaID)
-        //     ->select('bot_etapas.*')
-        //     ->orderBy('bot_etapas.ordem')
-        //     ->get();
         return $tarefaLog;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function show($tarefa_log)
     {
-        //
-    }
+        $tarefaID = $tarefa_log;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $tarefa_Log = Tarefa_log::where('bot_tarefa_logs.fk_id_tarefa_log','=',$tarefaID)
+        ->orderBy('bot_tarefa_logs.data_hora','DESC')
+        ->get();
+        return $tarefa_Log;
     }
 }

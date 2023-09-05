@@ -18,6 +18,7 @@ class TarefaController extends Controller
         $tarefa->hora_executar = $request->hora_executar;
         $tarefa->dia_da_semana = $request->dia_da_semana;
         $tarefa->estado = $request->estado;
+        $tarefa->equipe = $request->equipe;
         $tarefa->save();
 
         return $tarefa;
@@ -45,11 +46,12 @@ class TarefaController extends Controller
 
     public function atualizarTarefa(Request $request, Tarefa $tarefa)
     {
-        if ($tarefa->dia_da_semana = "Tarefa Filha") {
+        if ($tarefa->dia_da_semana === "Tarefa Filha") {
             $tarefa->dia_da_semana = $request->dia_da_semana;
             $tarefa->hora_executar = $request->hora_executar;
             $tarefa->nome_tarefa = $request->nome_tarefa;
             $tarefa->estado = 'Desativado';
+            $tarefa->equipe = $request->equipe;
             $tarefa->save();
 
             return $request;
@@ -58,6 +60,7 @@ class TarefaController extends Controller
             $tarefa->hora_executar = $request->hora_executar;
             $tarefa->nome_tarefa = $request->nome_tarefa;
             $tarefa->estado = $request->estado;
+            $tarefa->equipe = $request->equipe;
             $tarefa->save();
 
             return $request;
@@ -182,23 +185,25 @@ class TarefaController extends Controller
         $tarefa->hora_executar = $request->hora_executar;
         $tarefa->dia_da_semana = $request->dia_da_semana;
         $tarefa->estado = $request->estado;
+        $tarefa->equipe = $request->equipe;
         $tarefa->save();
 
         $cloneTarefaId = $tarefa->pk_id_tarefa;
 
-        $etapaSalvar = Etapa::where('bot_etapas.fk_id_tarefa', '=', $tarefaId)
+        $etapaSalvar = Etapa::where('bot_etapas.fk_id_tarefa_etapa', '=', $tarefaId)
             ->get();
 
         foreach ($etapaSalvar as $row) {
             $etapa = new Etapa();
             $etapa->nome_etapa = $row['nome_etapa'];
-            $etapa->fk_id_tarefa = $cloneTarefaId;
+            $etapa->fk_id_tarefa_etapa = $cloneTarefaId;
             $etapa->ordem = $row['ordem'];
             $etapa->acao = $row['acao'];
             $etapa->tempo_execucao = $row['tempo_execucao'];
             $etapa->digitar = $row['digitar'];
             $etapa->caminho = $row['caminho'];
             $etapa->atalho = $row['atalho'];
+            $etapa->renomear_data = $row['renomear_data'];
 
             $etapa->save();
         }

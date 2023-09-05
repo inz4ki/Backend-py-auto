@@ -14,7 +14,8 @@ class Tarefa extends Model
         'nome_tarefa',
         'hora_executar',
         'estado',
-        'dia_da_semana'
+        'dia_da_semana',
+        'equipe'
     ];
     protected $primaryKey = 'pk_id_tarefa';
     protected $table = 'bot_tarefas';
