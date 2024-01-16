@@ -11,15 +11,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TarefaHorarioController;
 
 
-# RH STV
-use App\Http\Controllers\PdfController;
-use App\Http\Controllers\ExperienciaController;
-use App\Http\Controllers\CursoController;
-use App\Http\Controllers\CandidatoController;
-use App\Http\Controllers\VagasController;
-use App\Http\Controllers\FormacaoController;
-use App\Http\Controllers\ProcessoSeletivoController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
