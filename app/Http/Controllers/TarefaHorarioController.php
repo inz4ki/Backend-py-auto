@@ -16,18 +16,19 @@ class TarefaHorarioController extends Controller
         return $tarefaHorario;
     }
 
-    public function show(TarefaHorario $tarefaHorario)
+    public function show(Request $request)
     {
-        return $tarefaHorario;
+        $tarefaID = $request->tarefaHorario;
+        $tarefa = TarefaHorario::where('fk_id_tarefa_horarios', '=', $tarefaID)->get();
+        return $tarefa;
     }
 
     public function store(Request $request)
     {
         $tarefaHorario = new TarefaHorario();
-        $tarefaHorario->fk_id_tarefa = $request->fk_id_tarefa;
-        $tarefaHorario->data_hora_executar = $request->data_hora_executar;
-        $tarefaHorario->dia_da_semana = $request->dia_da_semana;
-        $tarefaHorario->estado = $request->estado;
+        $tarefaHorario->fk_id_tarefa_horarios = $request->fk_id_tarefa_horarios;
+        $tarefaHorario->hora_executar = $request->hora_executar;
+        $tarefaHorario->estado = 'não executado';
         $tarefaHorario->save();
 
         return $tarefaHorario;
@@ -35,9 +36,8 @@ class TarefaHorarioController extends Controller
 
     public function update(Request $request, TarefaHorario $tarefaHorario)
     {
-        $tarefaHorario->fk_id_tarefa = $request->fk_id_tarefa;
-        $tarefaHorario->data_hora_executar = $request->data_hora_executar;
-        $tarefaHorario->dia_da_semana = $request->dia_da_semana;
+        $tarefaHorario->fk_id_tarefa_horarios = $request->fk_id_tarefa_horarios;
+        $tarefaHorario->hora_executar = $request->hora_executar;
         $tarefaHorario->estado = $request->estado;
         $tarefaHorario->save();
 
@@ -47,6 +47,6 @@ class TarefaHorarioController extends Controller
     public function destroy(TarefaHorario $tarefaHorario)
     {
         $tarefaHorario->delete();
-        return 'deletado com sucesso';
+        return $tarefaHorario;
     }
 }

@@ -10,13 +10,12 @@ class TarefaHorario extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data_hora_executar',
-        'dia_da_semana',
         'estado',
-        'fk_id_tarefa',
-        'pk_id_tarefa_horario'
+        'fk_id_tarefa_horarios',
+        'pk_id_horario_tarefas',
+        'hora_executar'
     ];
-    protected $primaryKey = 'pk_id_tarefa_horario';
-    protected $table = 'tarefa_horario';
+    protected $primaryKey = 'pk_id_horario_tarefas';
+    protected $table = 'bot_horario_tarefas';
     public $timestamps = false;
 }
